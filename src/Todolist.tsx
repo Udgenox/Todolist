@@ -1,5 +1,6 @@
 import {FilterValuesType} from "./App.tsx";
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {ChangeEvent} from "react";
+import {AddItemForm} from "./AddItemForm.tsx";
 
 export type TaskType = {
     id: string;
@@ -20,29 +21,29 @@ export type PropsType = {
 }
 
 export const Todolist = (props: PropsType ) => {
-    const [title, setNewTaskTitle] = useState('');
-    const [error, setError] = useState<string | null>(null);
+    // const [title, setNewTaskTitle] = useState('');
+    // const [error, setError] = useState<string | null>(null);
 
-    const addTask= () => {
-        if (title.trim() !== '') {
-            props.addTask(title.trim(), props.id);
-            setNewTaskTitle('')
-        } else {
-            setError('Field is required')}
-    }
-    const onNewTitleChanheHandler = (e:ChangeEvent<HTMLInputElement>) => {
-        setNewTaskTitle(e.currentTarget.value)
-    }
-    const onKeyPressHandler = (e : KeyboardEvent<HTMLInputElement>) => {
-        // setError(null)
-        // if (e.key === 'Enter') {
-        //     props.addTask(title);
-        //     setNewTaskTitle('');}}
-        setError(null)
-        if (e.key === 'Enter') {
-            addTask();
-        }
-    }
+    // const addTask= () => {
+    //     if (title.trim() !== '') {
+    //         props.addTask(title.trim(), props.id);
+    //         setNewTaskTitle('')
+    //     } else {
+    //         setError('Field is required')}
+    // }
+    // const onNewTitleChanheHandler = (e:ChangeEvent<HTMLInputElement>) => {
+    //     setNewTaskTitle(e.currentTarget.value)
+    // }
+    // const onKeyPressHandler = (e : KeyboardEvent<HTMLInputElement>) => {
+    //     // setError(null)
+    //     // if (e.key === 'Enter') {
+    //     //     props.addTask(title);
+    //     //     setNewTaskTitle('');}}
+    //     setError(null)
+    //     if (e.key === 'Enter') {
+    //         addTask();
+    //     }
+    // }
 
 
     const onAllClickHandler = () => props.changeFilter("all", props.id);
@@ -52,18 +53,15 @@ export const Todolist = (props: PropsType ) => {
         props.removeTodolist(props.id)
     }
 
+    //функция-обвертка, где мы избавляемся от id
+    const addTask = (title:string) => {
+        props.addTask(title, props.id)
+    }
+
             return (
                 <div>
                     <h3>{props.title} <button onClick={removeTodolis}>x</button></h3>
-                    <div>
-                        <input value={title}
-                               onChange={onNewTitleChanheHandler}
-                               onKeyPress={onKeyPressHandler}
-                                className={error ? 'error' : ''}
-                        />
-                        <button onClick={addTask}>+</button>
-                        {error && <div className={'error-message'}>{error}</div>}
-                    </div>
+                    <AddItemForm addItem={addTask} />
                     <ul>
                         {
                             props.tasks.map((task: TaskType) => {
