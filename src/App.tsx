@@ -3,6 +3,8 @@ import {TaskType, Todolist} from "./Todolist.tsx";
 import {useState} from "react";
 import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm.tsx";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
 
 export type FilterValuesType = "all" | "completed" | 'active';
 export type TodolistType = {
@@ -129,34 +131,58 @@ const addTodolist = (title: string) => {
 
   return (
       <div className="app">
-          <AddItemForm addItem={addTodolist}/>
-          {
-              todolists.map((tl) => {
-                  let tasksTodolist = tasksObj[tl.id];
-                  if (tl.filter==='completed') {
-                      tasksTodolist = tasksTodolist.filter((task: TaskType) => task.isDone === true);
-                  }
-                  if (tl.filter==='active') {
-                      tasksTodolist = tasksTodolist.filter((task: TaskType) => task.isDone === false);
-                  }
+          <AppBar position="static">
+              <Toolbar>
+                  <IconButton
+                      edge="start"
+                      color="inherit"
+                      aria-label="menu"
+                  >
+                      <MenuIcon/>
+                  </IconButton>
+                  <Typography variant="h6">
+                      News
+                  </Typography>
+                  <Button color={"inherit"}>Login</Button>
+              </Toolbar>
+          </AppBar>
+          <Container>
+              <Grid container style={ { padding: '20px'} }>
+                  <AddItemForm addItem={addTodolist}/>
+              </Grid>
+              <Grid container spacing={3}>
+                  {
+                      todolists.map((tl) => {
+                          let tasksTodolist = tasksObj[tl.id];
+                          if (tl.filter === 'completed') {
+                              tasksTodolist = tasksTodolist.filter((task: TaskType) => task.isDone === true);
+                          }
+                          if (tl.filter === 'active') {
+                              tasksTodolist = tasksTodolist.filter((task: TaskType) => task.isDone === false);
+                          }
 
-                  return <Todolist
-                      key={tl.id}
-                      id={tl.id}
-                      title={tl.title}
-                      tasks={tasksTodolist}
-                      removeTask={removeTask}
-                      changeFilter={changeFilter}
-                      addTask={addTask}
-                      changeTaskStatus={changeStatus}
-                      changeTaskTitle={changeTaskTitle}
-                      filter={tl.filter}
-                      removeTodolist={removeTodolist}
-                      changeTodolistTitle={changeTodolistTitle}
-                  />
-              })
-          }
-
+                          return <Grid>
+                              <Paper style={ { padding: '10px'} }>
+                                  <Todolist
+                                      key={tl.id}
+                                      id={tl.id}
+                                      title={tl.title}
+                                      tasks={tasksTodolist}
+                                      removeTask={removeTask}
+                                      changeFilter={changeFilter}
+                                      addTask={addTask}
+                                      changeTaskStatus={changeStatus}
+                                      changeTaskTitle={changeTaskTitle}
+                                      filter={tl.filter}
+                                      removeTodolist={removeTodolist}
+                                      changeTodolistTitle={changeTodolistTitle}
+                                  />
+                              </Paper>
+                          </Grid>
+                      })
+                  }
+              </Grid>
+          </Container>
           {/*<Todolist title='Songs' tasks={tasks}  />*/}
       </div>
   )
