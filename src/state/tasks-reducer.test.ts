@@ -1,7 +1,7 @@
 import {expect, test} from "vitest";
 import {TaskStateType} from "../App.tsx";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasks-reducer.ts";
-import {addTodolistAC, RemoveTodoListAC} from "./todolists-reducer.ts";
+import {addTodolistAC, removeTodoListAC} from "./todolists-reducer.ts";
 
 
 test('correct task should be deleted from correct array', () => {
@@ -140,7 +140,7 @@ test('property with todo list should be deleted', () => {
         ],
     };
 
-    const action = RemoveTodoListAC('todolistId2')
+    const action = removeTodoListAC('todolistId2')
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState);
